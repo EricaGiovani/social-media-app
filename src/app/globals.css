@@ -1,14 +1,14 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
-
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  /*Font family*/
+  --font-sans: var(--font-inter), sans-serif;
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans);
-  --font-mono: var(--font-geist-mono);
   --font-heading: var(--font-sans);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
@@ -48,6 +48,99 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
+@theme {
+
+  /*Font Weight*/
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+
+  /* Display Typography */
+  --text-display-3xl: 60px;
+  --text-display-3xl--line-height: 72px;
+
+  --text-display-2xl: 48px;
+  --text-display-2xl--line-height: 60px;
+  --text-display-2xl--letter-spacing: -0.32px;
+
+  --text-display-xl: 40px;
+  --text-display-xl--line-height: 48px;
+  --text-display-xl--letter-spacing: -0.32px;
+
+  --text-display-lg: 36px;
+  --text-display-lg--line-height: 44px;
+  --text-display-lg--letter-spacing: -0.32px;
+
+  --text-display-md: 32px;
+  --text-display-md--line-height: 40px;
+
+  --text-display-sm: 28px;
+  --text-display-sm--line-height: 38px;
+
+  --text-display-xs: 24px;
+  --text-display-xs--line-height: 36px;
+
+/* Text Typography */
+  --text-xl: 20px;
+  --text-xl--line-height: 34px;
+
+  --text-lg: 18px;
+  --text-lg--line-height: 32px;
+
+  --text-md: 16px;
+  --text-md--line-height: 30px;
+
+  --text-sm: 14px;
+  --text-sm--line-height: 28px;
+
+  --text-xs: 12px;
+  --text-xs--line-height: 24px;
+
+  /*Gray/Neutral*/
+  --color-gray-25: #FDFDFD;
+  --color-gray-50: #FAFAFA;
+  --color-gray-100: #F5F5F5;
+  --color-gray-200: #E9EAEB;
+  --color-gray-300: #D5D7DA;
+  --color-gray-400: #A4A7AE;
+  --color-gray-500: #717680;
+  --color-gray-600: #535862;
+  --color-gray-700: #414651;
+  --color-gray-800: #252B37;
+  --color-gray-900: #181D27;
+  --color-gray-950: #0A0D12;
+
+  /*Primary*/
+  --color-primary-100: #F6F9FE;
+  --color-primary-200: #7F51F9;
+  --color-primary-300: #6936F2;
+
+  /*Accent*/
+  --color-red: #D9206E;
+  --color-green: #079455;
+  --color-yellow: #FDB022;
+
+  /*Base Colors*/
+  --color-white: #FFFFFF;
+  --color-black: #000000;
+
+  /*Border Radius*/
+  --radius-none: 0;
+  --radius-xxs: 0.125rem;
+  --radius-xs: 0.25rem;
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.625rem;
+  --radius-xl: 0.75rem;
+  --radius-2xl: 1rem;
+  --radius-3xl: 1.25rem;
+  --radius-4xl: 1.5rem;
+  --radius-full: 9999px;
+
+}
+
 :root {
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
@@ -84,37 +177,14 @@
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  --background: #000000;
+  --foreground: #fafafa;
+  --card: #0a0d12;
+  --primary: #9b5cf6;
+  --primary-foreground: #ffffff;
+  --border: #252b37;
+  --input: #252b37;
+  --destructive: #f04438;
 }
 
 @layer base {
@@ -125,6 +195,6 @@
     @apply bg-background text-foreground;
   }
   html {
-    @apply font-sans;
+    @apply --font-inter;
   }
 }
