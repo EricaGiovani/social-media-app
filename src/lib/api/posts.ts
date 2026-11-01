@@ -21,7 +21,7 @@ export type Author = {
 export type Post = {
   id: number;
   imageUrl: string;
-  caption: string;
+  caption: string | null;
   createdAt: string;
   author: Author;
   likeCount: number;
@@ -33,6 +33,9 @@ export type FeedPage = ApiResponse<{ items: Post[] }>;
 
 export const getFeed = (page: number) =>
   api<FeedPage>(`/api/feed?page=${page}&limit=${FEED_LIMIT}`);
+
+export const getPosts = (page: number) =>
+  api<ApiResponse<{ posts: Post[] }>>(`/api/posts?page=${page}&limit=${FEED_LIMIT}`);
 
 export const likePost = (id: number) =>
   api<ApiResponse<unknown>>(`/api/posts/${id}/like`, { method: "POST" });

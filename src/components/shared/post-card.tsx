@@ -12,12 +12,12 @@ import type { Post } from "@/lib/api/posts";
 import dayjs from "@/lib/dayjs";
 
 const icons = {
-  like: "/icons/IconLike.svg",
-  likeFilled: "/icons/IconLikeFilled.svg",
-  comment: "/icons/IconComment.svg",
-  share: "/icons/IconShare.svg",
-  save: "/icons/IconSave.svg",
-  saveFilled: "/icons/IconSaveFilled.svg",
+  like: "/IconLike.svg",
+  likeFilled: "/IconLikeFilled.svg",
+  comment: "/IconComment.svg",
+  share: "/IconShare.svg",
+  save: "/IconSave.svg",
+  saveFilled: "/IconSaveFilled.svg",
 };
 
 const CAPTION_LIMIT = 100;
@@ -43,9 +43,10 @@ export function PostCard({ post }: { post: Post }) {
     action();
   };
 
-  const long = post.caption.length > CAPTION_LIMIT;
+  const text = post.caption ?? "";
+  const long = text.length > CAPTION_LIMIT;
   const caption =
-    long && !expanded ? `${post.caption.slice(0, CAPTION_LIMIT)}...` : post.caption;
+  long && !expanded ? `${text.slice(0, CAPTION_LIMIT)}...` : text;
   const profileHref = `/profile/${encodeURIComponent(post.author.username)}`;
 
   return (
@@ -75,7 +76,7 @@ export function PostCard({ post }: { post: Post }) {
       >
         <Image
           src={post.imageUrl}
-          alt={post.caption.slice(0, 80)}
+          alt={text.slice(0, 80) || `Post by ${post.author.username}`}
           fill
           sizes="(max-width: 768px) 100vw, 576px"
           className="object-cover"
@@ -128,6 +129,7 @@ export function PostCard({ post }: { post: Post }) {
         </button>
       </div>
 
+    {text && (
       <div className="text-sm xl:text-md md:text-[15px] text-gray-25">
         <p className="font-bold">{post.author.username}</p>
         <p className="whitespace-pre-line break-words font-regular">{caption}</p>
@@ -141,7 +143,8 @@ export function PostCard({ post }: { post: Post }) {
           </button>
         )}
       </div>
-
+    )}
+      <div className="border-b-1 border-gray-900"></div>
       <LikesDialog postId={post.id} open={likesOpen} onOpenChange={setLikesOpen} />
     </article>
   );

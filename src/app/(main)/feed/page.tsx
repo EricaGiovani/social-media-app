@@ -3,6 +3,7 @@ import { useEffect, useMemo, useRef } from "react";
 import { PostCard } from "@/components/shared/post-card";
 import { Button } from "@/components/ui/button";
 import { useFeed } from "@/hooks/use-feed";
+import type { Post } from "@/lib/api/posts";
 
 export default function FeedPage() {
   const { data, isLoading, isError, refetch, fetchNextPage, hasNextPage, isFetchingNextPage } =
@@ -10,10 +11,10 @@ export default function FeedPage() {
   const sentinel = useRef<HTMLDivElement>(null);
 
   const posts = useMemo(() => {
-    const map = new Map();
-    data?.pages.forEach((p) => p.data.items.forEach((it) => map.set(it.id, it)));
-    return [...map.values()];
-  }, [data]);
+  const map = new Map<number, Post>();
+  data?.pages.flat().forEach((it) => map.set(it.id, it));
+  return [...map.values()];
+}, [data]);
 
   useEffect(() => {
     const el = sentinel.current;
@@ -43,7 +44,7 @@ export default function FeedPage() {
 
   if (posts.length === 0) {
     return (
-      <div className="py-20 text-center">
+      <div className="py-65 text-center">
         <p className="font-semibold">Your feed is empty</p>
         <p className="text-sm text-muted-foreground">
           Follow people to see their posts here.

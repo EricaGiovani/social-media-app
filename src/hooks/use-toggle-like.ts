@@ -1,7 +1,7 @@
 import { InfiniteData, useMutation, useQueryClient } from "@tanstack/react-query";
-import { likePost, unlikePost, type FeedPage } from "@/lib/api/posts";
+import { likePost, unlikePost, type Post } from "@/lib/api/posts";
 
-type Cache = InfiniteData<FeedPage>;
+type Cache = InfiniteData<Post[]>;
 
 export function useToggleLike() {
   const qc = useQueryClient();
@@ -12,29 +12,25 @@ export function useToggleLike() {
 
     onMutate: async ({ id, liked }) => {
       await qc.cancelQueries({ queryKey: ["feed"] });
-      const prev = qc.getQueryData<Cache>(["feed"]);
+      const prev = qc.getQueriesData<Cache>({ queryKey: ["feed"] });
 
-      qc.setQueryData<Cache>(["feed"], (old) =>
+      qc.setQueriesData<Cache>({ queryKey: ["feed"] }, (old) =>
         old && {
           ...old,
-          pages: old.pages.map((p) => ({
-            ...p,
-            data: {
-              ...p.data,
-              items: p.data.items.map((it) =>
-                it.id === id
-                  ? { ...it, likedByMe: !liked, likeCount: it.likeCount + (liked ? -1 : 1) }
-                  : it,
-              ),
-            },
-          })),
+          pages: old.pages.map((page) =>
+            page.map((p) =>
+              p.id === id
+                ? { ...p, likedByMe: !liked, likeCount: p.likeCount + (liked ? -1 : 1) }
+                : p,
+            ),
+          ),
         },
       );
       return { prev };
     },
 
     onError: (_e, _v, ctx) => {
-      if (ctx?.prev) qc.setQueryData(["feed"], ctx.prev);
+      ctx?.prev.forEach(([key, data]) => qc.setQueryData(key, data));
     },
     onSettled: () => qc.invalidateQueries({ queryKey: ["feed"] }),
   });

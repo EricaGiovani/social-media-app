@@ -1,18 +1,19 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { FEED_LIMIT, getSaved, savePost, unsavePost } from "@/lib/api/posts";
+import { useAppSelector } from "@/store/hooks";
 
 export function useSavedIds() {
+  const token = useAppSelector((s) => s.auth.token);
   return useQuery({
     queryKey: ["saved-ids"],
-    queryFn: async () => {
-      const ids: number[] = [];
+    enabled: !!token,
+    queryFn: async () => { const ids: number[] = [];
       for (let page = 1; page <= 50; page++) {
         const res = await getSaved(page);
         ids.push(...res.data.posts.map((p) => p.id));
         if (res.data.posts.length < FEED_LIMIT) break;
       }
-      return ids;
-    },
+      return ids; },
   });
 }
 
