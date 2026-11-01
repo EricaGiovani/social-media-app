@@ -12,7 +12,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { loginSchema, type LoginValues } from "@/schemas/auth";
 import { login } from "@/lib/api/auth";
-import { setToken } from "@/store/authSlice";
+import { setCredentials } from "@/store/authSlice";
+import { getReturnTo } from "@/lib/return-to";
+
 
 export default function LoginPage() {
   const router = useRouter();
@@ -28,8 +30,8 @@ export default function LoginPage() {
   const mutation = useMutation({
     mutationFn: login,
     onSuccess: (res) => {
-      dispatch(setToken(res.data.token));
-      router.push("/feed");
+      dispatch(setCredentials(res.data));
+      router.push(getReturnTo());
     },
   });
 

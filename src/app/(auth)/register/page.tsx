@@ -11,7 +11,8 @@ import { Label } from "@/components/ui/label";
 import { PasswordInput } from "@/components/shared/password-input";
 import { registerSchema, type RegisterValues } from "@/schemas/auth";
 import { register as registerApi } from "@/lib/api/auth";
-import { setToken } from "@/store/authSlice";
+import { setCredentials } from "@/store/authSlice";
+import { getReturnTo } from "@/lib/return-to";
 
 
 const fields = [
@@ -38,8 +39,8 @@ export default function RegisterPage() {
   const mutation = useMutation({
     mutationFn: registerApi,
     onSuccess: (res) => {
-      dispatch(setToken(res.data.token));
-      router.push("/feed");
+      dispatch(setCredentials(res.data));
+      router.push(getReturnTo());
     },
   });
 
