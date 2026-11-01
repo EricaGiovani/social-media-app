@@ -3,6 +3,14 @@ import type { ApiResponse } from "./auth";
 
 export const FEED_LIMIT = 20;
 
+export type SavedPost = Pick<Post, "id" | "imageUrl" | "caption" | "createdAt">;
+
+export type LikeUser = Author & {
+  isFollowedByMe: boolean;
+  isMe: boolean;
+  followsMe: boolean;
+};
+
 export type Author = {
   id: number;
   username: string;
@@ -31,3 +39,29 @@ export const likePost = (id: number) =>
 
 export const unlikePost = (id: number) =>
   api<ApiResponse<unknown>>(`/api/posts/${id}/like`, { method: "DELETE" });
+
+export const savePost = (id: number) =>
+  api<ApiResponse<unknown>>(`/api/posts/${id}/save`, { method: "POST" });
+
+export const unsavePost = (id: number) =>
+  api<ApiResponse<unknown>>(`/api/posts/${id}/save`, { method: "DELETE" });
+
+export const getSaved = (page: number) =>
+  api<ApiResponse<{ posts: SavedPost[] }>>(
+    `/api/me/saved?page=${page}&limit=${FEED_LIMIT}`,
+  );
+
+export const getPostLikes = (id: number, page = 1) =>
+  api<ApiResponse<{ users: LikeUser[] }>>(
+    `/api/posts/${id}/likes?page=${page}&limit=${FEED_LIMIT}`,
+  );
+
+export const followUser = (username: string) =>
+  api<ApiResponse<unknown>>(`/api/follow/${encodeURIComponent(username)}`, {
+    method: "POST",
+  });
+
+export const unfollowUser = (username: string) =>
+  api<ApiResponse<unknown>>(`/api/follow/${encodeURIComponent(username)}`, {
+    method: "DELETE",
+  });
