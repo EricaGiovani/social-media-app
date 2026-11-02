@@ -2,6 +2,7 @@ import { api } from "./client";
 import type { ApiResponse } from "./auth";
 
 export const FEED_LIMIT = 20;
+export const COMMENTS_LIMIT = 10;
 
 export type SavedPost = Pick<Post, "id" | "imageUrl" | "caption" | "createdAt">;
 
@@ -9,6 +10,13 @@ export type LikeUser = Author & {
   isFollowedByMe: boolean;
   isMe: boolean;
   followsMe: boolean;
+};
+
+export type Pagination = {
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
 };
 
 export type Author = {
@@ -29,13 +37,34 @@ export type Post = {
   likedByMe: boolean;
 };
 
-export type FeedPage = ApiResponse<{ items: Post[] }>;
+export type Comment = {
+  id: number;
+  text: string;
+  createdAt: string;
+  author: Author;
+  isMine?: boolean;
+};
 
-export const getFeed = (page: number) =>
-  api<FeedPage>(`/api/feed?page=${page}&limit=${FEED_LIMIT}`);
+export type CommentsRes = ApiResponse<{
+  comments: Comment[];
+  pagination: Pagination;
+}>;
 
-export const getPosts = (page: number) =>
-  api<ApiResponse<{ posts: Post[] }>>(`/api/posts?page=${page}&limit=${FEED_LIMIT}`);
+export type PostsPage = { items: Post[]; pagination: Pagination };
+
+export const getFeed = async (page: number): Promise<PostsPage> => {
+  const res = await api<ApiResponse<PostsPage>>(
+    `/api/feed?page=${page}&limit=${FEED_LIMIT}`,
+  );
+  return { items: res.data.items, pagination: res.data.pagination };
+};
+
+export const getPosts = async (page: number): Promise<PostsPage> => {
+  const res = await api<ApiResponse<{ posts: Post[]; pagination: Pagination }>>(
+    `/api/posts?page=${page}&limit=${FEED_LIMIT}`,
+  );
+  return { items: res.data.posts, pagination: res.data.pagination };
+};
 
 export const likePost = (id: number) =>
   api<ApiResponse<unknown>>(`/api/posts/${id}/like`, { method: "POST" });
@@ -68,3 +97,20 @@ export const unfollowUser = (username: string) =>
   api<ApiResponse<unknown>>(`/api/follow/${encodeURIComponent(username)}`, {
     method: "DELETE",
   });
+
+  export const getPost = (id: number) => api<ApiResponse<Post>>(`/api/posts/${id}`);
+
+export const deletePost = (id: number) =>
+  api<ApiResponse<unknown>>(`/api/posts/${id}`, { method: "DELETE" });
+
+export const getComments = (id: number, page: number) =>
+  api<CommentsRes>(`/api/posts/${id}/comments?page=${page}&limit=${COMMENTS_LIMIT}`);
+
+export const addComment = (id: number, text: string) =>
+  api<ApiResponse<Comment>>(`/api/posts/${id}/comments`, {
+    method: "POST",
+    body: JSON.stringify({ text }),
+  });
+
+export const deleteComment = (id: number) =>
+  api<ApiResponse<unknown>>(`/api/comments/${id}`, { method: "DELETE" });
