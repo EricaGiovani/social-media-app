@@ -12,7 +12,7 @@ export default function FeedPage() {
 
   const posts = useMemo(() => {
   const map = new Map<number, Post>();
-  data?.pages.flat().forEach((it) => map.set(it.id, it));
+  data?.pages.forEach((p) => p.items.forEach((it) => map.set(it.id, it)));
   return [...map.values()];
 }, [data]);
 

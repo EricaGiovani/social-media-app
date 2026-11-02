@@ -22,7 +22,12 @@ const icons = {
 
 const CAPTION_LIMIT = 100;
 
-export function PostCard({ post }: { post: Post }) {
+export function PostCard({post, detail = false, headerRight,
+  }: {
+      post: Post;
+      detail?: boolean;
+      headerRight?: React.ReactNode;
+}) {
   const router = useRouter();
   const pathname = usePathname();
   const token = useAppSelector((s) => s.auth.token);
@@ -44,7 +49,7 @@ export function PostCard({ post }: { post: Post }) {
   };
 
   const text = post.caption ?? "";
-  const long = text.length > CAPTION_LIMIT;
+  const long = !detail && text.length > CAPTION_LIMIT;
   const caption =
   long && !expanded ? `${text.slice(0, CAPTION_LIMIT)}...` : text;
   const profileHref = `/profile/${encodeURIComponent(post.author.username)}`;
@@ -68,6 +73,7 @@ export function PostCard({ post }: { post: Post }) {
             {dayjs(post.createdAt).fromNow()}
           </p>
         </div>
+        <div className="ml-auto">{headerRight}</div>
       </header>
 
       <Link
