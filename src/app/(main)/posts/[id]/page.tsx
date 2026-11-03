@@ -31,6 +31,8 @@ export default function PostDetailPage() {
       qc.invalidateQueries({ queryKey: ["feed"] });
       qc.invalidateQueries({ queryKey: ["saved-ids"] });
       router.replace("/feed");
+      qc.invalidateQueries({ queryKey: ["my-posts"] });
+      qc.invalidateQueries({ queryKey: ["me"] });
     },
   });
 
