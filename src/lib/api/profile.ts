@@ -63,22 +63,40 @@ export const getMyPosts = async (page: number) => {
   );
   return res.data;
 };
+
 export const getMyLikes = (page: number) =>
   fetchList<GridPost>("/api/me/likes", "posts", page);
+
 export const getMySaved = (page: number) =>
   fetchList<GridPost>("/api/me/saved", "posts", page);
+
 export const getMyFollowers = (page: number) =>
   fetchList<FollowUser>("/api/me/followers", "users", page);
+
 export const getMyFollowing = (page: number) =>
   fetchList<FollowUser>("/api/me/following", "users", page);
 
 export const getUser = (username: string) =>
   api<ApiResponse<PublicUser>>(`/api/users/${enc(username)}`);
+
 export const getUserPosts = (username: string, page: number) =>
   fetchList<GridPost>(`/api/users/${enc(username)}/posts`, "posts", page);
+
 export const getUserLikes = (username: string, page: number) =>
   fetchList<GridPost>(`/api/users/${enc(username)}/likes`, "posts", page);
+
 export const getUserFollowers = (username: string, page: number) =>
   fetchList<FollowUser>(`/api/users/${enc(username)}/followers`, "users", page);
+
 export const getUserFollowing = (username: string, page: number) =>
   fetchList<FollowUser>(`/api/users/${enc(username)}/following`, "users", page);
+
+export const searchUsers = async (
+  q: string,
+  page: number,
+): Promise<Paged<FollowUser>> => {
+  const res = await api<
+    ApiResponse<{ users: FollowUser[]; pagination: Pagination }>
+  >(`/api/users/search?q=${enc(q)}&page=${page}&limit=${FEED_LIMIT}`);
+  return { items: res.data.users, pagination: res.data.pagination };
+};
