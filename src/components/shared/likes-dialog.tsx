@@ -1,6 +1,5 @@
 "use client";
 import Link from "next/link";
-import { useQuery } from "@tanstack/react-query";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,6 +10,7 @@ import {
 } from "@/components/ui/dialog";
 import { getPostLikes, type LikeUser } from "@/lib/api/posts";
 import { FollowButton } from "@/components/shared/follow-button";
+import { usePaged } from "@/hooks/use-paged";
 import { fixUrl } from "@/lib/url";
 
 function Row({ user }: { user: LikeUser }) {
@@ -51,12 +51,11 @@ export function LikesDialog({
   open: boolean;
   onOpenChange: (v: boolean) => void;
 }) {
-  const { data, isLoading, isError, refetch } = useQuery({
-    queryKey: ["post-likes", postId],
-    queryFn: () => getPostLikes(postId),
-    enabled: open,
-  });
-  const users = data?.data.users ?? [];
+  const q = usePaged<LikeUser>(
+    ["post-likes", postId],
+    (page) => getPostLikes(postId, page),
+    open,
+  );
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -65,26 +64,37 @@ export function LikesDialog({
           <DialogTitle>Likes</DialogTitle>
         </DialogHeader>
 
-        {isLoading && (
+        {q.isLoading && (
           <p className="text-sm text-muted-foreground">Loading...</p>
         )}
-        {isError && (
+        {q.isError && (
           <div className="space-y-2 text-sm">
             <p>Failed to load likes.</p>
-            <Button size="sm" onClick={() => refetch()}>
+            <Button size="sm" onClick={() => q.refetch()}>
               Retry
             </Button>
           </div>
         )}
-        {!isLoading && !isError && users.length === 0 && (
+        {!q.isLoading && !q.isError && q.items.length === 0 && (
           <p className="text-sm text-muted-foreground">No likes yet.</p>
         )}
 
         <ul className="space-y-4">
-          {users.map((u) => (
+          {q.items.map((u) => (
             <Row key={u.id} user={u} />
           ))}
         </ul>
+
+        {q.hasNextPage && (
+          <Button
+            variant="outline"
+            className="w-full rounded-full"
+            disabled={q.isFetchingNextPage}
+            onClick={() => q.fetchNextPage()}
+          >
+            {q.isFetchingNextPage ? "Loading..." : "Load more"}
+          </Button>
+        )}
       </DialogContent>
     </Dialog>
   );

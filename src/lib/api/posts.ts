@@ -83,10 +83,15 @@ export const getSaved = (page: number) =>
     `/api/me/saved?page=${page}&limit=${FEED_LIMIT}`,
   );
 
-export const getPostLikes = (id: number, page = 1) =>
-  api<ApiResponse<{ users: LikeUser[] }>>(
-    `/api/posts/${id}/likes?page=${page}&limit=${FEED_LIMIT}`,
-  );
+export const getPostLikes = async (
+  id: number,
+  page = 1,
+): Promise<{ items: LikeUser[]; pagination: Pagination }> => {
+  const res = await api<
+    ApiResponse<{ users: LikeUser[]; pagination: Pagination }>
+  >(`/api/posts/${id}/likes?page=${page}&limit=${FEED_LIMIT}`);
+  return { items: res.data.users, pagination: res.data.pagination };
+};
 
 export const followUser = (username: string) =>
   api<ApiResponse<unknown>>(`/api/follow/${encodeURIComponent(username)}`, {
