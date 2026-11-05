@@ -114,3 +114,6 @@ export const addComment = (id: number, text: string) =>
 
 export const deleteComment = (id: number) =>
   api<ApiResponse<unknown>>(`/api/comments/${id}`, { method: "DELETE" });
+
+export const createPost = (form: FormData) =>
+  api<ApiResponse<Post>>("/api/posts", { method: "POST", body: form });
