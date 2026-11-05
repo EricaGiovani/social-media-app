@@ -27,12 +27,24 @@ const passwordFields = [
   { name: "confirmPassword", label: "Confirm Password", placeholder: "Enter your confirm password" },
 ] as const;
 
+const fieldOf = (msg: string) => {
+  const m = msg.toLowerCase();
+  return m.includes("phone")
+    ? "phone"
+    : m.includes("email")
+      ? "email"
+      : m.includes("username")
+        ? "username"
+        : null;
+};
+
 export default function RegisterPage() {
   const router = useRouter();
   const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors },
   } = useForm<RegisterValues>({ resolver: zodResolver(registerSchema) });
 
@@ -42,6 +54,10 @@ export default function RegisterPage() {
       dispatch(setCredentials(res.data));
       router.push(getReturnTo());
     },
+    onError: (err) => {
+    const field = fieldOf(err.message);
+    if (field) setError (field, { message: err.message });
+  },
   });
 
   return (
@@ -80,7 +96,7 @@ export default function RegisterPage() {
             </div>
           ))}
 
-          {mutation.error && (
+          {mutation.error && !fieldOf(mutation.error.message) && (
             <p className="text-sm text-destructive">{mutation.error.message}</p>
           )}
 
