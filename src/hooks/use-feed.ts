@@ -1,9 +1,9 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getFeed, getPosts } from "@/lib/api/posts";
-import { useAppSelector } from "@/store/hooks";
+import { useAuth } from "./use-auth";
 
 export function useFeed() {
-  const { token, hydrated } = useAppSelector((s) => s.auth);
+  const { token, hydrated } = useAuth();
 
   return useInfiniteQuery({
     queryKey: ["feed", token ? "private" : "public"],

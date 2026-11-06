@@ -11,8 +11,8 @@ import { EmptyNote, PostsGrid } from "@/components/shared/posts-grid";
 import { usePaged } from "@/hooks/use-paged";
 import { ApiError } from "@/lib/api/client";
 import { getUser, getUserLikes, getUserPosts, type GridPost } from "@/lib/api/profile";
-import { useAppSelector } from "@/store/hooks";
 import { safeDecode } from "@/lib/url";
+import { useAuth } from "@/hooks/use-auth";
 
 type Tab = "posts" | "likes";
 const tabs: { key: Tab; label: string }[] = [
@@ -33,7 +33,7 @@ function LikesTab({ username }: { username: string }) {
 export default function PublicProfilePage() {
   const params = useParams<{ username: string }>();
   const username = safeDecode(params.username);
-  const { token, hydrated } = useAppSelector((s) => s.auth);
+  const { token, hydrated } = useAuth();
   const [tab, setTab] = useState<Tab>("posts");
 
   const q = useQuery({

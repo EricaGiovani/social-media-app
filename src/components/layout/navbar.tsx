@@ -12,14 +12,15 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { useAppDispatch } from "@/store/hooks";
 import { logout } from "@/store/authSlice";
+import { useAuth } from "@/hooks/use-auth";
 
 export function Navbar() {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const qc = useQueryClient();
-  const { user, token, hydrated } = useAppSelector((s) => s.auth);
+  const { user, token, hydrated } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
 
   const handleLogout = () => {

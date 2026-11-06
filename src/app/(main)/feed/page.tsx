@@ -6,7 +6,7 @@ import { useFeed } from "@/hooks/use-feed";
 import type { Post } from "@/lib/api/posts";
 
 export default function FeedPage() {
-  const { data, isLoading, isError, refetch, fetchNextPage, hasNextPage, isFetchingNextPage } =
+  const { data, isPending, isError, refetch, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useFeed();
   const sentinel = useRef<HTMLDivElement>(null);
 
@@ -29,7 +29,7 @@ export default function FeedPage() {
     return () => io.disconnect();
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
-  if (isLoading) {
+  if (isPending) {
     return <div className="h-96 animate-pulse rounded-md bg-gray-900" />;
   }
 

@@ -1,12 +1,12 @@
 "use client";
 import { useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { useAppSelector } from "@/store/hooks";
+import { useAuth } from "@/hooks/use-auth";
 
 export default function PrivateLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
-  const { token, hydrated } = useAppSelector((s) => s.auth);
+  const { token, hydrated } = useAuth();
 
   useEffect(() => {
     if (hydrated && !token) {
