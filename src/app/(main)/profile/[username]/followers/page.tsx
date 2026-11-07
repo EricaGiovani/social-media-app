@@ -1,16 +1,10 @@
-"use client";
-import { useParams } from "next/navigation";
-import { FollowList } from "@/components/shared/follow-list";
-import { getUserFollowers } from "@/lib/api/profile";
-import { safeDecode } from "@/lib/url";
+import { Suspense } from "react";
+import { FollowersView } from "./followers-view";
 
-export default function UserFollowersPage() {
-  const username = safeDecode(useParams<{ username: string }>().username);
+export default function Page() {
   return (
-    <FollowList
-      title="Followers"
-      queryKey={["user", username, "followers"]}
-      fetcher={(p) => getUserFollowers(username, p)}
-    />
+    <Suspense fallback={<div className="h-40 animate-pulse rounded-md bg-gray-900" />}>
+      <FollowersView />
+    </Suspense>
   );
 }
