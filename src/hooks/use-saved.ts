@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { FEED_LIMIT, getSaved, savePost, unsavePost } from "@/lib/api/posts";
 import { useAppSelector } from "@/store/hooks";
+import { toast } from "sonner";
 
 export function useSavedIds() {
   const token = useAppSelector((s) => s.auth.token);
@@ -32,6 +33,7 @@ export function useToggleSave() {
     },
     onError: (_e, _v, ctx) => {
       if (ctx?.prev) qc.setQueryData(["saved-ids"], ctx.prev);
+      toast.error("Failed to update saved post.");
     },
     onSettled: () => {
       qc.invalidateQueries({ queryKey: ["saved-ids"] });
