@@ -10,7 +10,7 @@ import { useAppSelector } from "@/store/hooks";
 import type { Comment } from "@/lib/api/posts";
 import dayjs from "@/lib/dayjs";
 
-export function CommentsSection({ postId }: { postId: number }) {
+export function CommentsSection({ postId, footer }: { postId: number; footer?: React.ReactNode; }) {
   const user = useAppSelector((s) => s.auth.user);
   const { data, isLoading, isError, refetch, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useComments(postId);
@@ -87,6 +87,7 @@ export function CommentsSection({ postId }: { postId: number }) {
       )}
 
       <CommentComposer postId={postId} />
+      {footer}
     </section>
   );
 }
