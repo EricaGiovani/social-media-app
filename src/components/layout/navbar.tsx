@@ -15,6 +15,7 @@ import {
 import { useAppDispatch } from "@/store/hooks";
 import { logout } from "@/store/authSlice";
 import { useAuth } from "@/hooks/use-auth";
+import { DesktopSearch, MobileSearch } from "./user-search";
 
 export function Navbar() {
   const router = useRouter();
@@ -22,6 +23,7 @@ export function Navbar() {
   const qc = useQueryClient();
   const { user, token, hydrated } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -34,6 +36,7 @@ export function Navbar() {
     "rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground";
 
   return (
+    <> 
     <header className="fixed inset-x-0 top-0 z-30 border-b bg-black border-gray-900 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-5xl items-center justify-between gap-4 px-4">
         <Link href="/feed" className="flex items-center gap-3">
@@ -41,18 +44,18 @@ export function Navbar() {
           <span className="text-lg font-bold">Sociality</span>
         </Link>
 
-        <Link
-          href="/users/search"
-          className="hidden h-12 w-full max-w-sm items-center gap-1 rounded-full border border-border px-4 py-2 text-sm text-gray-600 font-regular text-muted-foreground md:flex"
-        >
-          <Search size={20} /> Search
-        </Link>
+        <DesktopSearch />
 
         {hydrated && token && (
           <div className="flex items-center gap-4">
-            <Link href="/users/search" aria-label="Search" className="md:hidden">
+            <button
+              type="button"
+              aria-label="Search"
+              onClick={() => setSearchOpen(true)}
+              className="md:hidden"
+            >
               <Search size={20} />
-            </Link>
+            </button>
             <DropdownMenu>
               <DropdownMenuTrigger className="flex items-center gap-2 rounded-full outline-none focus-visible:ring-2 focus-visible:ring-ring">
                 <Avatar className="size-10">
@@ -76,9 +79,14 @@ export function Navbar() {
               <Link href="/register" className={`${registerLink} text-md bg-primary-300 text-gray-25 font-bold h-11 w-[130px] text-center`}>Register</Link>
             </div>
             <div className="flex items-center gap-4 md:hidden">
-              <Link href="/users/search" aria-label="Search">
+              <button
+                type="button"
+                aria-label="Search"
+                onClick={() => setSearchOpen(true)}
+                className="md:hidden"
+              >
                 <Search size={20} />
-              </Link>
+              </button>
               <button
                 type="button"
                 aria-label={menuOpen ? "Close menu" : "Open menu"}
@@ -98,5 +106,7 @@ export function Navbar() {
         </div>
       )}
     </header>
+    {searchOpen && <MobileSearch onClose={() => setSearchOpen(false)} />}
+    </>
   );
 }
