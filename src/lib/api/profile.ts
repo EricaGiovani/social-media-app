@@ -100,3 +100,6 @@ export const searchUsers = async (
   >(`/api/users/search?q=${enc(q)}&page=${page}&limit=${FEED_LIMIT}`);
   return { items: res.data.users, pagination: res.data.pagination };
 };
+
+export const getUserPostsFull = (username: string, page: number) =>
+  fetchList<Post>(`/api/users/${enc(username)}/posts`, "posts", page);

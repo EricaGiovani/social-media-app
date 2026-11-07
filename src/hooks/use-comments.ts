@@ -45,6 +45,7 @@ function useRefresh(postId: number) {
     qc.invalidateQueries({ queryKey: ["comments", postId] });
     qc.invalidateQueries({ queryKey: ["post", postId] });
     qc.invalidateQueries({ queryKey: ["feed"] });
+    qc.invalidateQueries({ queryKey: ["author-posts"] });
   };
 }
 
