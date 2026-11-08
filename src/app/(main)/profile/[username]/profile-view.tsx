@@ -15,10 +15,20 @@ import { safeDecode } from "@/lib/url";
 import { useAuth } from "@/hooks/use-auth";
 
 type Tab = "posts" | "likes";
-const tabs: { key: Tab; label: string }[] = [
-  { key: "posts", label: "Posts" },
-  { key: "likes", label: "Likes" },
-];
+const tabs = [
+  {
+    key: "posts",
+    label: "Gallery",
+    icon: "/IconGallery.svg",
+    activeIcon: "/IconGalleryFilled.svg",
+  },
+  {
+    key: "likes",
+    label: "Liked",
+    icon: "/IconLike.svg",
+    activeIcon: "/IconLikeFilledWhite.svg",
+  },
+] satisfies { key: Tab; label: string; icon: string; activeIcon?: string }[];
 
 function PostsTab({ username }: { username: string }) {
   const q = usePaged<GridPost>(["user-posts", username], (p) => getUserPosts(username, p));

@@ -10,11 +10,26 @@ import { useMe, useMyPosts } from "@/hooks/use-profile";
 import { getMyLikes, getMySaved, type GridPost } from "@/lib/api/profile";
 
 type Tab = "posts" | "likes" | "saved";
-const tabs: { key: Tab; label: string }[] = [
-  { key: "posts", label: "Posts" },
-  { key: "likes", label: "Likes" },
-  { key: "saved", label: "Saved" },
-];
+const tabs = [
+  {
+    key: "posts",
+    label: "Gallery",
+    icon: "/IconGallery.svg",
+    activeIcon: "/IconGalleryFilled.svg",
+  },
+  {
+    key: "likes",
+    label: "Liked",
+    icon: "/IconLike.svg",
+    activeIcon: "/IconLikeFilledWhite.svg",
+  },
+  {
+    key: "saved",
+    label: "Saved",
+    icon: "/IconSave.svg",
+    activeIcon: "/IconSaveFilled.svg",
+  },
+] satisfies { key: Tab; label: string; icon: string; activeIcon?: string }[];
 
 function PostsTab() {
   const q = useMyPosts();
