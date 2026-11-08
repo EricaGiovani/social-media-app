@@ -12,6 +12,7 @@ import {
   type CommentsRes,
 } from "@/lib/api/posts";
 import { useAppSelector } from "@/store/hooks";
+import { track } from "@/lib/analytics"; 
 
 type Cache = InfiniteData<CommentsRes>;
 
@@ -83,6 +84,7 @@ export function useAddComment(postId: number) {
       if (ctx?.prev) qc.setQueryData(key, ctx.prev);
     },
     onSettled: refresh,
+    onSuccess: () => track("comment_submit", { postId }),
   });
 }
 

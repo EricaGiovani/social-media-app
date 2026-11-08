@@ -17,6 +17,8 @@ import { deletePost, type Post } from "@/lib/api/posts";
 import { getUserPostsFull } from "@/lib/api/profile";
 import { ApiError } from "@/lib/api/client";
 import { useAppSelector } from "@/store/hooks";
+import { track } from "@/lib/analytics";
+import { useEffect } from "react";
 
 export function PostView() {
   const { id } = useParams<{ id: string }>();
@@ -28,6 +30,10 @@ export function PostView() {
   const { data, isLoading, isError, error, refetch } = usePost(postId);
   const post = data?.data;
   const authorName = post?.author.username;
+  const viewedId = post?.id;
+    useEffect(() => {
+    if (viewedId) track("view_post", { postId: viewedId });
+  }, [viewedId]);
 
   const more = usePaged<Post>(
     ["author-posts", authorName],

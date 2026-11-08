@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { followUser, unfollowUser } from "@/lib/api/posts";
 import { useAppSelector } from "@/store/hooks";
 import { cn } from "@/lib/utils";
+import { track } from "@/lib/analytics";
 
 export function FollowButton({
   username,
@@ -37,6 +38,7 @@ export function FollowButton({
         qc.invalidateQueries({ queryKey: [key] });
       }
     },
+    onSuccess: (_d, next) => track(next ? "follow" : "unfollow", { username }),
   });
 
   const click = () => {

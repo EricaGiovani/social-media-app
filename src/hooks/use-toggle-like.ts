@@ -2,6 +2,7 @@ import { InfiniteData, useMutation, useQueryClient } from "@tanstack/react-query
 import { toast } from "sonner";
 import { likePost, unlikePost, type Post, type PostsPage } from "@/lib/api/posts";
 import type { ApiResponse } from "@/lib/api/auth";
+import { track } from "@/lib/analytics";
 
 type ListCache = InfiniteData<PostsPage>;
 type PostRes = ApiResponse<Post>;
@@ -55,10 +56,11 @@ export function useToggleLike() {
       toast.error("Failed to update like. Please try again.");
     },
 
-    onSuccess: () => {
+    onSuccess: (_d, v) => {
+      track(v.liked ? "unlike" : "like", { postId: v.id });
       for (const k of STALE_KEYS) {
-        qc.invalidateQueries({ queryKey: [k], refetchType: "none" });
-      }
-    },
+      qc.invalidateQueries({ queryKey: [k], refetchType: "none" });
+    }
+  },
   });
 }
