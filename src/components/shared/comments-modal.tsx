@@ -7,6 +7,7 @@ import { PostActions } from "./post-actions";
 import type { Post } from "@/lib/api/posts";
 import dayjs from "@/lib/dayjs";
 import { fixUrl } from "@/lib/url";
+import { SafeImage } from "./safe-image";
 
 const closeIcon = "/IconClose.svg"; 
 
@@ -48,7 +49,7 @@ export function CommentsModal({
     >
       {/* Laptop: post image */}
       <div className="relative hidden h-[720px] w-[720px] shrink-0 bg-gray-950 md:block">
-        <Image
+        <SafeImage
           src={post.imageUrl}
           alt=""
           fill

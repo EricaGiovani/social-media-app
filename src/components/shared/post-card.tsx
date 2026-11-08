@@ -1,6 +1,5 @@
 "use client";
 import { useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { PostActions } from "./post-actions";
@@ -8,6 +7,7 @@ import { CommentsModal } from "./comments-modal";
 import type { Post } from "@/lib/api/posts";
 import dayjs from "@/lib/dayjs";
 import { fixUrl } from "@/lib/url";
+import { SafeImage } from "./safe-image";
 
 const captionLimit = 100;
 
@@ -31,7 +31,7 @@ export function PostCard({
 
   const image = (
     <div className="relative aspect-square overflow-hidden rounded-md bg-gray-900">
-      <Image
+      <SafeImage
         src={post.imageUrl}
         alt={text.slice(0, 80) || `Post by ${post.author.username}`}
         fill

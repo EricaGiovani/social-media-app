@@ -1,9 +1,9 @@
 "use client";
 import Link from "next/link";
-import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import type { GridPost } from "@/lib/api/profile";
 import type { usePaged } from "@/hooks/use-paged";
+import { SafeImage } from "./safe-image";
 
 type Query = ReturnType<typeof usePaged<GridPost>>;
 
@@ -32,7 +32,7 @@ export function PostsGrid({ q, empty }: { q: Query; empty: React.ReactNode }) {
               href={`/posts/${p.id}`}
               className="relative block aspect-square overflow-hidden bg-gray-900"
             >
-              <Image
+              <SafeImage
                 src={p.imageUrl}
                 alt={p.caption ?? `Post ${p.id}`}
                 fill
