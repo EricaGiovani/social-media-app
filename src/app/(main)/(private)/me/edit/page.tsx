@@ -106,37 +106,45 @@ export default function EditProfilePage() {
         onSubmit={handleSubmit((v) => mutation.mutate(v))}
         className="space-y-4"
       >
-        <div className="flex flex-col items-center gap-2">
-          <Avatar className="size-24">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-[180px_minmax(0,1fr)] md:gap-8">
+
+      {/* Foto Profil */}
+        <div className="flex flex-col items-center gap-2 md:items-center">
+          <Avatar className="size-24 md:size-36">
             <AvatarImage src={preview ?? fixUrl(profile.avatarUrl)} alt="" />
             <AvatarFallback>{profile.name[0]?.toUpperCase()}</AvatarFallback>
           </Avatar>
-          <button
-            type="button"
-            onClick={() => fileRef.current?.click()}
-            className="text-sm xl:text-md md:text[15px]font-bold"
-          >
-            Change Photo
-          </button>
-          <input
-            ref={fileRef}
-            type="file"
-            accept="image/png,image/jpeg,image/webp"
-            onChange={onPickFile}
-            className="hidden"
-          />
-          {fileError && (
-            <p className="text-xs text-destructive">{fileError}</p>
-          )}
+
+        <button
+          type="button"
+          onClick={() => fileRef.current?.click()}
+          className="text-sm font-bold md:text-[15px]"
+        >
+          Change Photo
+        </button>
+
+        <input
+          ref={fileRef}
+          type="file"
+          accept="image/png,image/jpeg,image/webp"
+          onChange={onPickFile}
+          className="hidden"
+        />
+
+        {fileError && (
+          <p className="text-xs text-destructive">{fileError}</p>
+        )}
         </div>
 
-        <div className="space-y-1.5">
-          <Label htmlFor="name">Name</Label>
-          <Input id="name" aria-invalid={!!errors.name} {...register("name")} />
-          {errors.name && (
-            <p className="text-xs text-destructive">{errors.name.message}</p>
-          )}
-        </div>
+      {/* Form Profile */}
+        <div className="space-y-4">
+          <div className="space-y-1.5">
+            <Label htmlFor="name">Name</Label>
+            <Input id="name" aria-invalid={!!errors.name} {...register("name")} />
+            {errors.name && (
+              <p className="text-xs text-destructive">{errors.name.message}</p>
+            )}
+          </div>
 
         <div className="space-y-1.5">
           <Label htmlFor="username">Username</Label>
@@ -170,10 +178,7 @@ export default function EditProfilePage() {
 
         <div className="space-y-1.5">
           <Label htmlFor="bio">Bio</Label>
-          <TextArea
-            id="bio"
-            {...register("bio")}
-          />
+          <TextArea id="bio" {...register("bio")} />
         </div>
 
         {mutation.error && (
@@ -183,11 +188,13 @@ export default function EditProfilePage() {
         <Button
           type="submit"
           disabled={mutation.isPending}
-          className="w-full rounded-full"
+          className="h-12 w-full rounded-full"
         >
           {mutation.isPending ? "Saving..." : "Save Changes"}
         </Button>
-      </form>
+      </div>
     </div>
+    </form>
+  </div>
   );
 }

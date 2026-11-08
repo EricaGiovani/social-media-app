@@ -51,19 +51,26 @@ export function ProfileHeader({
       {bio && <p className="whitespace-pre-line break-words text-sm">{bio}</p>}
 
       <div className="grid grid-cols-4 text-center">
-        {stats.map((s) => {
+        {stats.map((s,index) => {
           const inner = (
             <>
               <p className="text-lg font-bold md:text-[15px] xl:text-xl text-gray-25">{s.value}</p>
               <p className="text-xs xl:text-md md:text-[15px]text-gray-400">{s.label}</p>
             </>
           );
+
+          const className = `block text-center ${
+          index !== 0 ? "border-l border-border" : ""
+          }`;
+
           return s.href ? (
-            <Link key={s.label} href={s.href} className="block">
+            <Link key={s.label} href={s.href} className={className}>
               {inner}
             </Link>
           ) : (
-            <div key={s.label}>{inner}</div>
+            <div key={s.label} className={className}>
+              {inner}
+            </div>
           );
         })}
       </div>

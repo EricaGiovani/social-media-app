@@ -47,62 +47,58 @@ export function CommentsModal({
       className="flex h-[65vh] w-full flex-col overflow-hidden rounded-t-2xl bg-gray-950 md:h-[720px] md:w-[1120px] md:max-w-[calc(100vw-48px)] md:flex-row md:rounded-none md:border-0"
     >
       {/* Laptop: post image */}
-      <div className="relative hidden min-h-0 flex-1 bg-gray-950 md:block">
+      <div className="relative hidden h-[720px] w-[720px] shrink-0 bg-gray-950 md:block">
         <Image
           src={post.imageUrl}
           alt=""
           fill
-          sizes="(max-width: 1024px) 46vw, 480px"
+          sizes="720px"
           className="object-contain"
         />
       </div>
 
       {/* Comments panel */}
-      <div className="flex h-[65vh] w-full flex-col overflow-hidden rounded-t-2xl bg-gray-950 md:h-[80vh] md:max-h-[640px] md:w-[92vw] md:max-w-[960px] md:flex-row md:rounded-none md:border-0">
-        {/* Mobile header */}
-        <div className="flex items-center justify-between p-4 md:hidden">
-          <h2 className="font-bold text-md">Comments</h2>
-          {closeBtn}
+      <div className="flex min-h-0 min-w-0 flex-1 flex-col bg-gray-950">
+
+      {/* Header dan caption postingan */}
+      <div className="hidden shrink-0 space-y-3 border-b border-gray-900 p-4 md:block">
+        <div className="flex items-center gap-3">
+          <Avatar>
+            <AvatarImage src={fixUrl(post.author.avatarUrl)} alt="" />
+            <AvatarFallback>
+              {post.author.username[0]?.toUpperCase()}
+            </AvatarFallback>
+          </Avatar>
+
+        <div className="min-w-0">
+          <p className="truncate text-sm font-bold">
+            {post.author.username}
+          </p>
+          <p className="text-xs text-muted-foreground">
+            {dayjs(post.createdAt).fromNow()}
+          </p>
         </div>
 
-        {/* Laptop header */}
-        <div className="hidden space-y-3 p-4 md:block">
-          <div className="flex items-center gap-3">
-            <Avatar>
-              <AvatarImage src={fixUrl(post.author.avatarUrl)} alt="" />
-              <AvatarFallback>
-                {post.author.username[0]?.toUpperCase()}
-              </AvatarFallback>
-            </Avatar>
-
-            <div className="min-w-0">
-              <p className="truncate text-sm font-bold">
-                {post.author.username}
-              </p>
-              <p className="text-xs font-regular text-muted-foreground">
-                {dayjs(post.createdAt).fromNow()}
-              </p>
-            </div>
-
-            <div className="ml-auto">{closeBtn}</div>
-          </div>
-
-          {post.caption && (
-            <p className="max-h-28 overflow-y-auto whitespace-pre-line break-words text-sm text-gray-25">
-              {post.caption}
-            </p>
-          )}
-        </div>
-
-        <CommentsSection
-          postId={post.id}
-          footer={
-            <div className="hidden shrink-0 md:block">
-              <PostActions post={post} saveOnly />
-            </div>
-          }
-        />
+        <div className="ml-auto">{closeBtn}</div>
       </div>
+
+      {post.caption && (
+        <p className="whitespace-pre-line break-words text-sm text-gray-25">
+          {post.caption}
+        </p>
+      )}
+    </div>
+
+      {/* Daftar komentar dan composer */}
+      <CommentsSection
+        postId={post.id}
+        footer={
+          <div className="hidden shrink-0 md:block">
+            <PostActions post={post} saveOnly />
+          </div>
+      }
+      />
+    </div>
     </div>
   </div>
   );

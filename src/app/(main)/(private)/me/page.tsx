@@ -110,7 +110,7 @@ export default function MePage() {
         action={
           <Link
             href="/me/edit"
-            className="block rounded-full border border-border py-2 text-center text-sm font-semibold"
+            className="flex h-12 w-full items-center justify-center rounded-full border border-border px-5 text-sm font-semibold md:w-[130px] md:shrink-0"
           >
             Edit Profile
           </Link>

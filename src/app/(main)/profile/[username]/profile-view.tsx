@@ -87,7 +87,7 @@ export function ProfileView() {
           u.isMe ? (
             <Link
               href="/me/edit"
-              className="flex h-12 w-full items-center justify-center rounded-full border border-border px-10 text-base font-semibold md:w-auto"
+              className="inline-flex h-12 w-[130px] shrink-0 items-center justify-center rounded-full border border-border px-4 text-sm font-semibold"
             >
               Edit Profile
             </Link>
