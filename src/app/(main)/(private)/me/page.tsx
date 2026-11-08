@@ -22,7 +22,7 @@ function PostsTab() {
     <PostsGrid
       q={q}
       empty={
-        <div className="space-y-3 py-10 text-center gap-1">
+        <div className="mx-auto flex w-full max-w-[453px] flex-col items-center gap-6 pt-5 text-center">
           <p className="font-bold text-md md:text-[17px] xl:text-lg text-gray-25">Your story starts here</p>
           <p className="text-sm xl:text-md md:text-[15px] font-regular text-gray-400">
             Share your first post and let the world see your moments, passions,
@@ -30,7 +30,7 @@ function PostsTab() {
           </p>
           <Link
             href="/posts/new"
-            className="inline-block rounded-full bg-primary-300 gap-2 px-6 py-2 text-sm md:text-[15px] xl:text-md font-bold text-primary-foreground"
+            className="mx-auto flex h-12 w-[259px] items-center justify-center gap-2 rounded-full border border-border bg-primary-300 p-2 text-sm font-bold text-gray-25 md:text-[15px] xl:text-md"
           >
             Upload My First Post
           </Link>

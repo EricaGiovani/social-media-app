@@ -17,6 +17,7 @@ import { useAppDispatch } from "@/store/hooks";
 import { updateUser } from "@/store/authSlice";
 import { fixUrl } from "@/lib/url";
 import Image from "next/image";
+import { TextArea } from "@/components/shared/textarea";
 
 const maxSize = 5 * 1024 * 1024;
 const types = ["image/png", "image/jpeg", "image/webp"];
@@ -95,9 +96,6 @@ export default function EditProfilePage() {
     return <div className="h-96 animate-pulse rounded-md bg-gray-900" />;
   }
 
-  const fieldClass =
-    "w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring";
-
   return (
     <div className="space-y-6">
       <Link href="/me" className="flex items-center gap-2 font-bold text-md xl:text-display-xs md:text-[19px] text-gray-25">
@@ -172,10 +170,8 @@ export default function EditProfilePage() {
 
         <div className="space-y-1.5">
           <Label htmlFor="bio">Bio</Label>
-          <textarea
+          <TextArea
             id="bio"
-            rows={4}
-            className={fieldClass}
             {...register("bio")}
           />
         </div>

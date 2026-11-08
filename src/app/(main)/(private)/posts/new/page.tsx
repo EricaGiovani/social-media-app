@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { createPost } from "@/lib/api/posts";
 import { cn } from "@/lib/utils";
+import { TextArea } from "@/components/shared/textarea"; 
 
 const icons = {
   upload: "/IconUpload.svg",
@@ -168,7 +169,10 @@ export default function CreatePostPage() {
                 imageError && "border-red",
               )}
             >
-              <Image src={icons.upload} alt="" width={20} height={20} />
+              <span className="flex size-10 items-center justify-center rounded-lg border border-border">      
+                <Image src={icons.upload} alt="" width={20} height={20} /> 
+              </span>
+  
               <span className="text-sm font-semibold">
                 <span className="font-bold text-primary-200">
                   Click to upload
@@ -188,11 +192,9 @@ export default function CreatePostPage() {
           <label htmlFor="caption" className="text-sm font-bold text-gray-25">
             Caption
           </label>
-          <textarea
+          <TextArea
             id="caption"
-            rows={4}
             placeholder="Create your caption"
-            className="w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
             {...register("caption")}
           />
         </div>
@@ -204,7 +206,7 @@ export default function CreatePostPage() {
         <Button
           type="submit"
           disabled={mutation.isPending}
-          className="w-full rounded-full"
+          className="h-12 w-full rounded-full text-md font-bold"
         >
           {mutation.isPending ? "Sharing..." : "Share"}
         </Button>
