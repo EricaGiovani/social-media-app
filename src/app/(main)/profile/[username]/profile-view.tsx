@@ -87,12 +87,12 @@ export function ProfileView() {
           u.isMe ? (
             <Link
               href="/me/edit"
-              className="block rounded-full border border-border px-8 py-2 text-center text-sm md:text-[15px] xl:text-md font-bold text-gray-25 bg-primary-300 h-12"
+              className="flex h-12 w-full items-center justify-center rounded-full border border-border px-10 text-base font-semibold md:w-auto"
             >
               Edit Profile
             </Link>
           ) : (
-            <FollowButton username={u.username} following={u.isFollowing} className="w-full md:w-auto md:px-8" />
+            <FollowButton username={u.username} following={u.isFollowing} className="h-12 w-full px-10 text-base font-semibold md:w-auto" />
           )
         }
       />

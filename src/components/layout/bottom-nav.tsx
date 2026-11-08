@@ -5,28 +5,43 @@ import { usePathname } from "next/navigation";
 import { Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 
+const icons = {
+  home: { idle: "/IconHome.svg", active: "/IconHomeFilled.svg" },
+  profile: { idle: "/IconProfile.svg", active: "/IconProfileFilled.svg" },
+};
+
 export function BottomNav() {
   const pathname = usePathname();
 
-  const item = (href: string, label: string, icon: string) => {
-    const active = pathname.startsWith(href);
-    return (
-      <Link
-        href={href}
-        className={cn(
-          "flex flex-col items-center gap-1 text-xs",
-          active ? "text-primary" : "text-foreground",
-        )}
-      >
-        <Image src={icon} alt="" width={22} height={22} />
-        {label}
-      </Link>
-    );
-  };
+  const isHome = pathname === "/feed";
+  const isProfile = pathname === "/me" || pathname.startsWith("/me/");
+
+  const item = (
+    href: string,
+    label: string,
+    icons: { idle: string; active: string },
+    active: boolean,
+  ) => (
+    <Link
+      href={href}
+      className={cn(
+        "flex flex-col items-center gap-1 text-xs",
+        active ? "text-primary" : "text-foreground",
+      )}
+    >
+      <Image
+        src={active ? icons.active : icons.idle}
+        alt=""
+        width={20}
+        height={20}
+      />
+      {label}
+    </Link>
+  );
 
   return (
-    <nav className="fixed inset-x-4 bottom-4 z-30 mx-auto flex max-w-sm items-center justify-between rounded-full border border-gray-900 border-border bg-gray-950 px-10 py-2">
-      {item("/feed", "Home", "/IconHome.svg")}
+    <nav className="fixed inset-x-4 bottom-4 z-30 mx-auto flex max-w-sm items-center justify-between rounded-full border border-border bg-gray-950 px-10 py-2 backdrop-blur">
+      {item("/feed", "Home", icons.home, isHome)}
       <Link
         href="/posts/new"
         aria-label="Create post"
@@ -34,7 +49,7 @@ export function BottomNav() {
       >
         <Plus />
       </Link>
-      {item("/me", "Profile", "/IconProfile.svg")}
+      {item("/me", "Profile", icons.profile, isProfile)}
     </nav>
   );
 }

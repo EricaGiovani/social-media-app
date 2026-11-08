@@ -45,7 +45,7 @@ function PostsTab() {
           </p>
           <Link
             href="/posts/new"
-            className="mx-auto flex h-12 w-[259px] items-center justify-center gap-2 rounded-full border border-border bg-primary-300 p-2 text-sm font-bold text-gray-25 md:text-[15px] xl:text-md"
+            className="flex h-12 w-full items-center justify-center rounded-full border border-border px-10 bg-primary-300 text-sm font-bold text-gray-25 md:text-[15px] xl:text-md md:w-auto"
           >
             Upload My First Post
           </Link>
