@@ -107,9 +107,13 @@ export function CommentsSection({
         )}
       </div>
 
-      <div className="shrink-0 space-y-3 border-t border-gray-900 p-4">
-        {footer}
-        <CommentComposer postId={postId} />
+      <div className="shrink-0 border-t border-gray-900 p-4">
+        <div className="flex items-center gap-3">
+          <div className="min-w-0 flex-1">
+            <CommentComposer postId={postId} />
+          </div>
+          {footer}
+        </div>
       </div>
     </section>
   );

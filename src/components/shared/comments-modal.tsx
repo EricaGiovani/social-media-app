@@ -36,70 +36,74 @@ export function CommentsModal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-end justify-center bg-gray-950 md:items-center md:p-6"
-      onClick={onClose}
+    className="fixed inset-0 z-50 flex items-end justify-center bg-black/70 md:items-center md:p-6"
+    onClick={onClose}
+  >
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-label="Comments"
+      onClick={(e) => e.stopPropagation()}
+      className="flex h-[65vh] w-full flex-col overflow-hidden rounded-t-2xl bg-gray-950 md:h-[720px] md:w-[1120px] md:max-w-[calc(100vw-48px)] md:flex-row md:rounded-none md:border-0"
     >
-      <div
-        role="dialog"
-        aria-modal="true"
-        aria-label="Comments"
-        onClick={(e) => e.stopPropagation()}
-        className="flex h-[65vh] w-full flex-col overflow-hidden rounded-t-2xl border border-border bg-black md:h-[80vh] md:max-w-5xl md:flex-row md:rounded-2xl"
-      >
-        {/* Laptop: left */}
-        <div className="relative hidden bg-gray-950 md:block md:w-1/2">
-          <Image
-            src={post.imageUrl}
-            alt=""
-            fill
-            sizes="50vw"
-            className="object-contain"
-          />
+      {/* Laptop: post image */}
+      <div className="relative hidden h-[720px] w-[720px] shrink-0 bg-gray-950 md:block">
+        <Image
+          src={post.imageUrl}
+          alt=""
+          fill
+          sizes="720px"
+          className="object-cover"
+        />
+      </div>
+
+      {/* Comments panel */}
+      <div className="flex min-h-0 min-w-0 flex-1 flex-col bg-gray-950">
+        {/* Mobile header */}
+        <div className="flex items-center justify-between p-4 md:hidden">
+          <h2 className="font-bold text-md">Comments</h2>
+          {closeBtn}
         </div>
 
-        <div className="flex min-h-0 flex-1 flex-col">
-          {/* Mobile: */}
-          <div className="flex items-center justify-between p-4 md:hidden">
-            <h2 className="font-bold text-md">Comments</h2>
-            {closeBtn}
-          </div>
+        {/* Laptop header */}
+        <div className="hidden space-y-3 p-4 md:block">
+          <div className="flex items-center gap-3">
+            <Avatar>
+              <AvatarImage src={fixUrl(post.author.avatarUrl)} alt="" />
+              <AvatarFallback>
+                {post.author.username[0]?.toUpperCase()}
+              </AvatarFallback>
+            </Avatar>
 
-          {/* Laptop: right*/}
-          <div className="hidden space-y-3 border-b border-gray-900 p-4 md:block">
-            <div className="flex items-center gap-3">
-              <Avatar>
-                <AvatarImage src={fixUrl(post.author.avatarUrl)} alt="" />
-                <AvatarFallback>
-                  {post.author.username[0]?.toUpperCase()}
-                </AvatarFallback>
-              </Avatar>
-              <div className="min-w-0">
-                <p className="truncate text-sm font-bold">
-                  {post.author.username}
-                </p>
-                <p className="text-xs font-regular text-muted-foreground">
-                  {dayjs(post.createdAt).fromNow()}
-                </p>
-              </div>
-              <div className="ml-auto">{closeBtn}</div>
-            </div>
-            {post.caption && (
-              <p className="max-h-28 overflow-y-auto whitespace-pre-line break-words text-sm text-gray-25">
-                {post.caption}
+            <div className="min-w-0">
+              <p className="truncate text-sm font-bold">
+                {post.author.username}
               </p>
-            )}
+              <p className="text-xs font-regular text-muted-foreground">
+                {dayjs(post.createdAt).fromNow()}
+              </p>
+            </div>
+
+            <div className="ml-auto">{closeBtn}</div>
           </div>
 
-          <CommentsSection
-            postId={post.id}
-            footer={
-              <div className="hidden md:block">
-                <PostActions post={post} />
-              </div>
-            }
-          />
+          {post.caption && (
+            <p className="max-h-28 overflow-y-auto whitespace-pre-line break-words text-sm text-gray-25">
+              {post.caption}
+            </p>
+          )}
         </div>
+
+        <CommentsSection
+          postId={post.id}
+          footer={
+            <div className="hidden shrink-0 md:block">
+              <PostActions post={post} saveOnly />
+            </div>
+          }
+        />
       </div>
     </div>
+  </div>
   );
 }

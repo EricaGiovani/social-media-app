@@ -20,9 +20,11 @@ const icons = {
 export function PostActions({
   post,
   onComment,
+  saveOnly = false,
 }: {
   post: Post;
   onComment?: () => void;
+  saveOnly?: boolean;
 }) {
   const router = useRouter();
   const pathname = usePathname();
@@ -41,6 +43,26 @@ export function PostActions({
     }
     action();
   };
+
+  const saveButton = (
+  <button
+    type="button"
+    aria-label={saved ? "Unsave" : "Save"}
+    disabled={save.isPending}
+    onClick={() => requireAuth(() => save.mutate({ id: post.id, saved }))}
+  >
+    <Image
+      src={saved ? icons.bookmarkFilled : icons.bookmark}
+      alt=""
+      width={24}
+      height={24}
+    />
+  </button>
+  );
+
+  if (saveOnly) {
+  return saveButton;
+  }
 
   const commentContent = (
     <>
@@ -92,19 +114,7 @@ export function PostActions({
           <Image src={icons.send} alt="" width={24} height={24} />
         </div>
 
-        <button
-          type="button"
-          aria-label={saved ? "Unsave" : "Save"}
-          disabled={save.isPending}
-          onClick={() => requireAuth(() => save.mutate({ id: post.id, saved }))}
-        >
-          <Image
-            src={saved ? icons.bookmarkFilled : icons.bookmark}
-            alt=""
-            width={24}
-            height={24}
-          />
-        </button>
+        {saveButton}
       </div>
 
       <LikesDialog postId={post.id} open={likesOpen} onOpenChange={setLikesOpen} />

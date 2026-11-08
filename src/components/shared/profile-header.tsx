@@ -54,8 +54,8 @@ export function ProfileHeader({
         {stats.map((s) => {
           const inner = (
             <>
-              <p className="text-lg font-bold text-sm md:text-[15px] xl:text-md text-muted-foreground">{s.value}</p>
-              <p className="text-xs text-muted-foreground">{s.label}</p>
+              <p className="text-lg font-bold md:text-[15px] xl:text-xl text-gray-25">{s.value}</p>
+              <p className="text-xs xl:text-md md:text-[15px]text-gray-400">{s.label}</p>
             </>
           );
           return s.href ? (
