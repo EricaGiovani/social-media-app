@@ -11,7 +11,6 @@ const nextConfig: NextConfig = {
         as: "*.css",
       },
     },
-    root: process.cwd(),
   },
   images: {
     remotePatterns: [{ protocol: "https", hostname: "res.cloudinary.com" }],
